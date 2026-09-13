@@ -1,0 +1,25 @@
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Diretório de build do LaTeX (latexmk -outdir=build)
+build/
+
+# Ferramentas locais (plantuml.jar, etc.)
+tools/
+
+# Configuracao local do editor
+.vscode/

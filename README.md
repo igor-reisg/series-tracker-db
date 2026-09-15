@@ -37,7 +37,7 @@ Enunciado da atividade (entrega de 16/09, via Classroom):
 | Grupo de 4 pessoas | 4 frentes definidas no apêndice do documento |
 | Minimundo definido pelo grupo, com 10 a 15 entidades | 11 entidades |
 | **Modelo conceitual** — minimundo, regras de negócio e DER | Texto pronto; falta o DER |
-| **Modelo lógico** — diagrama lógico já normalizado, com justificativas | A escrever |
+| **Modelo lógico** — diagrama lógico já normalizado, com justificativas | Completo |
 | **Modelo físico** — arquivo `.sql` comentado | A escrever |
 | Script `.sql` que crie um novo esquema com o nome do projeto | `CREATE SCHEMA serie_tracker` (previsto, não escrito) |
 | Script que crie as tabelas com todas as restrições necessárias | 17 tabelas previstas |
@@ -56,7 +56,7 @@ projeto/
 ├── documentacao-bd.pdf     # PDF gerado, versionado
 ├── script.sql              # script PostgreSQL (a criar)
 ├── .latexmkrc              # configuração de build do latexmk
-├── diagramas/              # DER e diagrama lógico (brModelo)
+├── diagramas/              # der-logico.dbml (fonte do diagrama lógico) e DER
 ├── images/                 # imagens usadas no documento
 └── build/                  # artefatos de compilação (ignorado pelo git)
 ```
@@ -65,8 +65,8 @@ projeto/
 
 | Capítulo | Conteúdo | Situação |
 | --- | --- | --- |
-| 1 — Modelagem Conceitual | minimundo, regras de negócio, dicionário de dados, cardinalidades, especialização, agregação, DER | Texto completo; falta desenhar o DER no brModelo |
-| 2 — Modelagem Lógica | mapeamento ER→relacional, esquema relacional, dependências funcionais, normalização, diagrama lógico | Esqueleto a ser escrito |
+| 1 — Modelagem Conceitual | minimundo, regras de negócio, dicionário de dados, cardinalidades, especialização, agregação, DER | Completo |
+| 2 — Modelagem Lógica | mapeamento ER→relacional, esquema relacional, dependências funcionais, normalização, diagrama lógico | Completo |
 | 3 — Modelagem Física | DDL, restrições de integridade, gatilhos, visões, carga de dados, consultas, rastreabilidade | Esqueleto a ser escrito |
 
 O Capítulo 1 **fixa o vocabulário do projeto**: nomes de entidades, atributos, tabelas e

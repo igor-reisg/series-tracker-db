@@ -20,6 +20,7 @@
 % ============================================================================
 
 \usepackage[T1]{fontenc}
+\usepackage{lmodern}      % fontes vetoriais para T1; sem isso o PDF sai em bitmap
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
 \usepackage{amsmath}
@@ -219,10 +220,8 @@ O domínio foi escolhido por concentrar, em um cenário familiar a qualquer usu�
 as construções que a modelagem conceitual precisa exercitar: uma hierarquia de
 composição em três níveis, relacionamentos muitos-para-muitos com atributos
 próprios, um grafo social que relaciona um conjunto de entidades a ele mesmo e um
-ato -- o de avaliar -- que incide indistintamente sobre três tipos de alvo.
-Nenhuma dessas construções foi introduzida artificialmente para satisfazer o
-enunciado: todas decorrem da forma como aplicações de acompanhamento de séries
-efetivamente funcionam.
+ato, o de avaliar, que incide indistintamente sobre três tipos de alvo. Todas elas
+decorrem da forma como as aplicações de acompanhamento de séries funcionam.
 
 \section{Descrição do minimundo}
 
@@ -230,16 +229,16 @@ O sistema modelado é uma rede social voltada ao acompanhamento e à avaliação
 séries de televisão. Ele não exibe conteúdo audiovisual: registra e organiza o que
 as pessoas assistem e o que elas acham do que assistiram. O paralelo mais próximo
 são as plataformas de catalogação de filmes e de livros, como Letterboxd e Goodreads,
-transposto para o formato seriado -- no qual a obra se subdivide em unidades menores, 
-e cada uma dessas unidades pode ser assistida e avaliada separadamente.
+transposto para o formato seriado, no qual a obra se subdivide em unidades menores e
+cada uma delas pode ser assistida e avaliada separadamente.
 
 O acervo do sistema é composto por \textbf{séries}, cada uma organizada em
-\textbf{temporadas}, que por sua vez se dividem em \textbf{episódios}. Essa
-hierarquia de três níveis é a espinha dorsal do minimundo, porque quase toda
-interação do usuário acontece em um desses três níveis. Cada série é classificada
+\textbf{temporadas}, que por sua vez se dividem em \textbf{episódios}. Quase toda
+interação do usuário acontece em um desses três níveis, e é por isso que a
+hierarquia organiza o restante do modelo. Cada série é classificada
 em um ou mais \textbf{gêneros} e conta com a participação de \textbf{pessoas} do
 meio audiovisual, que podem atuar como atores, diretores, roteiristas ou criadores.
-Uma mesma pessoa pode exercer funções diferentes em séries diferentes -- e até na
+Uma mesma pessoa pode exercer funções diferentes em séries diferentes, e até na
 mesma série.
 
 Os \textbf{usuários} do sistema mantêm uma relação individual com cada série do
@@ -254,16 +253,15 @@ está assistindo só pode ser calculado a partir dos registros individuais.
 Sobre qualquer um dos três níveis da hierarquia, o usuário pode publicar uma
 \textbf{avaliação}: uma nota, um texto crítico, ou ambos. Avaliar uma série
 inteira, uma temporada específica ou um episódio isolado são atos de natureza
-idêntica -- mudam apenas o alvo e o grau de detalhe -- e por isso são tratados no
-modelo como um único conceito especializado em três formas.
+idêntica, em que mudam apenas o alvo e o grau de detalhe, e por isso o modelo os
+trata como um único conceito especializado em três formas.
 
 A camada social se organiza em torno dessas avaliações. Um usuário pode
 \textbf{seguir} outros usuários, o que constitui seu acompanhamento de atividade;
 pode \textbf{curtir} avaliações alheias; e pode \textbf{comentar} nelas, inclusive
-respondendo a comentários de outras pessoas. É importante notar que a curtida e o
-comentário não incidem sobre a série nem sobre o autor isoladamente: eles incidem
-sobre o \emph{ato de avaliar}, isto é, sobre a associação entre um usuário e um
-item do acervo.
+respondendo a comentários de outras pessoas. A curtida e o comentário incidem sobre
+o \emph{ato de avaliar}, isto é, sobre a associação entre um usuário e um item do
+acervo.
 
 O minimundo organiza-se, portanto, em três pilares: o \textbf{acervo} (o dado
 sobre a obra), o \textbf{acompanhamento} (a relação entre usuário e obra) e o
@@ -405,10 +403,10 @@ Representa a obra audiovisual seriada.
 \end{tabularx}
 \end{table}
 
-\subsection{\id{temporada} -- entidade fraca}
+\subsection{\id{temporada} (entidade fraca)}
 
-Agrupa episódios dentro de uma série. É uma \textbf{entidade fraca}: seu número
-não identifica nada sozinho -- ``temporada 2'' só faz sentido quando se sabe de
+Agrupa episódios dentro de uma série. É uma \textbf{entidade fraca}: seu número não
+identifica nada sozinho, já que ``temporada 2'' só faz sentido quando se sabe de
 qual série se trata. A identificação depende, portanto, do relacionamento
 identificador com \id{serie}.
 
@@ -426,7 +424,7 @@ identificador com \id{serie}.
 \end{tabularx}
 \end{table}
 
-\subsection{\id{episodio} -- entidade fraca}
+\subsection{\id{episodio} (entidade fraca)}
 
 Unidade mínima de conteúdo e alvo mais frequente de registro e avaliação. Também é
 entidade fraca, dependente de \id{temporada} pelos mesmos motivos.
@@ -481,7 +479,7 @@ Profissional do meio audiovisual envolvido na produção de séries.
 \end{tabularx}
 \end{table}
 
-\subsection{\id{avaliacao} -- entidade genérica}
+\subsection{\id{avaliacao} (entidade genérica)}
 
 Representa o ato de avaliar: a manifestação de um usuário sobre um item do acervo.
 É a \textbf{superclasse} de uma especialização detalhada na
@@ -547,34 +545,34 @@ entidade no relacionamento. Participação mínima igual a 1 indica
 \textbf{Relacionamento} & \textbf{Entidades} & \textbf{Cardinalidade} & \textbf{Atributos próprios} \\
 \midrule
 \id{segue} & usuario / usuario & (0,N) : (0,N) & \id{data\_inicio} \\
-\id{possui\_temporada} & serie / temporada & (1,N) : (1,1) & -- \\
-\id{possui\_episodio} & temporada / episodio & (1,N) : (1,1) & -- \\
-\id{classifica} & serie / genero & (1,N) : (0,N) & -- \\
+\id{possui\_temporada} & serie / temporada & (1,N) : (1,1) & nenhum \\
+\id{possui\_episodio} & temporada / episodio & (1,N) : (1,1) & nenhum \\
+\id{classifica} & serie / genero & (1,N) : (0,N) & nenhum \\
 \id{participa} & pessoa / serie & (0,N) : (0,N) & \id{funcao}, \id{personagem} \\
 \id{declara\_estado} & usuario / serie & (0,N) : (0,N) & \id{estado}, \id{data\_atualizacao} \\
 \id{registra} & usuario / episodio & (0,N) : (0,N) & \id{data\_assistido} \\
-\id{escreve} & usuario / avaliacao & (0,N) : (1,1) & -- \\
+\id{escreve} & usuario / avaliacao & (0,N) : (1,1) & nenhum \\
 \id{curte} & usuario / avaliacao & (0,N) : (0,N) & \id{data\_curtida} \\
-\id{recebe} & avaliacao / comentario & (0,N) : (1,1) & -- \\
-\id{comenta} & usuario / comentario & (0,N) : (1,1) & -- \\
-\id{responde} & comentario / comentario & (0,1) : (0,N) & -- \\
+\id{recebe} & avaliacao / comentario & (0,N) : (1,1) & nenhum \\
+\id{comenta} & usuario / comentario & (0,N) : (1,1) & nenhum \\
+\id{responde} & comentario / comentario & (0,1) : (0,N) & nenhum \\
+\id{incide\_serie} & avaliacao\_serie / serie & (1,1) : (0,N) & nenhum \\
+\id{incide\_temporada} & avaliacao\_temporada / temporada & (1,1) : (0,N) & nenhum \\
+\id{incide\_episodio} & avaliacao\_episodio / episodio & (1,1) : (0,N) & nenhum \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-Três relacionamentos merecem comentário.
+Os três relacionamentos \id{incide\_*} ligam cada subclasse da especialização ao item do acervo que ela avalia. Eles decorrem da Seção~\ref{sec:especializacao}: se a avaliação incide sobre exatamente um alvo (RN15), cada subclasse precisa de uma ligação com esse alvo. A participação (1,1) do lado da subclasse é o que garante que nenhuma avaliação fique sem alvo.
 
-O \id{segue} é um \textbf{auto-relacionamento}: as duas pontas são o mesmo
-conjunto de entidades, e por isso exigem \textbf{papéis} distintos --
-\textit{seguidor} e \textit{seguido}. Sem os papéis, o diagrama seria ambíguo, pois
+O \id{segue} é um \textbf{auto-relacionamento}: as duas pontas são o mesmo conjunto de entidades, e por isso exigem \textbf{papéis} distintos, \textit{seguidor} e
+\textit{seguido}. Sem os papéis, o diagrama seria ambíguo, pois
 não haveria como saber qual das pontas representa quem segue.
 
 O \id{registra} não possui restrição de unicidade por par usuário-episódio, o que é
-incomum em relacionamentos desse tipo. A escolha é deliberada e implementa a RN11:
-como cada registro representa um evento de exibição datado, registrar o mesmo
-episódio duas vezes representa uma reexibição, não uma duplicação indevida. Isso
-faz com que \id{registra} se comporte, na prática, como um relacionamento com
-histórico.
+incomum em relacionamentos desse tipo. A escolha implementa a RN11: cada registro
+representa um evento de exibição datado, de modo que registrar o mesmo episódio duas
+vezes descreve uma reexibição. O relacionamento passa a funcionar como um histórico.
 
 O \id{responde} é um segundo auto-relacionamento, desta vez de grau 1:N: um
 comentário tem no máximo um comentário-pai e pode ter vários comentários-filho. A
@@ -609,32 +607,30 @@ A alternativa considerada foi tratar \id{avaliacao} como entidade única, com tr
 atributos de ligação opcionais, dos quais exatamente um estaria preenchido. Essa
 solução é comum em sistemas reais, porque simplifica as consultas: todas as
 avaliações ficam em uma só tabela. Ela foi
-descartada aqui por duas razões. A primeira é semântica: uma entidade em que a maior
-parte dos atributos de ligação é obrigatoriamente nula não expressa a realidade do
-minimundo, expressa uma acomodação de implementação. A segunda é de integridade:
+descartada aqui por duas razões. A primeira é semântica: uma entidade cujos
+atributos de ligação são quase todos nulos descreve mais a acomodação de
+implementação escolhida do que o minimundo. A segunda é de integridade:
 garantir que exatamente um dos três atributos esteja preenchido exige uma restrição
 composta que o modelo conceitual não consegue enunciar, apenas comentar. Com a
-especialização, a exclusividade é uma propriedade \emph{estrutural} do modelo, e não
-uma regra externa a ele.
+especialização, a exclusividade passa a ser uma propriedade \emph{estrutural} do
+modelo.
 
 \section{Agregação}\label{sec:agregacao}
 
 A entidade \id{avaliacao} é, conceitualmente, o resultado de uma associação entre um
-usuário e um item do acervo -- ou seja, é um \textbf{relacionamento reificado}. O
-modelo a trata como uma \textbf{agregação}, e isso tem uma consequência concreta:
-os relacionamentos \id{curte} e \id{recebe} não ligam usuários a séries nem
-usuários a usuários; eles ligam usuários \emph{à associação inteira}.
+usuário e um item do acervo, ou seja, um \textbf{relacionamento reificado}. O modelo
+a trata como uma \textbf{agregação}, e isso tem uma consequência concreta: os
+relacionamentos \id{curte} e \id{recebe} ligam usuários \emph{à associação inteira}.
 
-A distinção é observável no comportamento do sistema. Quando um usuário curte uma
-avaliação, ele não está curtindo a série (o que seria um relacionamento entre
-\id{usuario} e \id{serie}) nem o autor (o que seria um relacionamento entre
-\id{usuario} e \id{usuario}). Ele está curtindo o fato de que \emph{aquela pessoa
-específica avaliou aquele item específico daquele modo}. Se a avaliação for
-excluída, a curtida perde o objeto e deixa de existir (RN24) -- o que não
-aconteceria se ela estivesse ligada apenas à série ou apenas ao autor.
+A distinção é observável no comportamento do sistema. As alternativas seriam ligar a
+curtida à série, um relacionamento entre \id{usuario} e \id{serie}, ou ao autor, um
+relacionamento entre \id{usuario} e \id{usuario}. O que o usuário curte é o fato de
+\emph{aquela pessoa específica ter avaliado aquele item específico daquele modo}. Se
+a avaliação for excluída, a curtida perde o objeto e deixa de existir (RN24); presa
+à série ou ao autor, ela sobreviveria à exclusão.
 
-É por isso que, no diagrama, \id{curte} e \id{recebe} partem do retângulo que
-envolve a agregação, e não de uma das entidades participantes isoladamente.
+No diagrama, portanto, \id{curte} e \id{recebe} partem do retângulo que envolve a
+agregação, e não de uma das entidades participantes.
 
 \section{Atributos derivados}\label{sec:derivados}
 
@@ -646,11 +642,9 @@ redundantes.
 Optou-se por mantê-lo por uma razão prática: a ordenação de avaliações por
 popularidade é uma das operações mais frequentes do sistema, e recalcular a
 contagem a cada leitura é caro. A redundância é aceita conscientemente, mas exige
-contrapartida -- um mecanismo que garanta que o valor armazenado jamais divirja da
-contagem real. Esse mecanismo é especificado na Seção~\ref{sec:gatilhos}, na forma
-de um gatilho. A decisão ilustra um ponto recorrente em projeto de banco de dados:
-desnormalizar é legítimo, desde que a consistência seja garantida por construção e
-não por disciplina de quem escreve a aplicação.
+contrapartida: um mecanismo que garanta que o valor armazenado jamais divirja da
+contagem real. A Seção~\ref{sec:gatilhos} especifica esse mecanismo na forma de um
+gatilho.
 
 \section{Diagrama entidade-relacionamento}
 
@@ -672,22 +666,90 @@ agregação; (v) atributo derivado com elipse tracejada.}
 %     \label{fig:der-conceitual}
 % \end{figure}
 
-A especificação textual das Seções~\ref{sec:entidades} a~\ref{sec:derivados} é
-suficiente e não ambígua para a construção do diagrama: toda entidade, todo
+\begin{figure}[p]
+    \centering
+    \includegraphics[height=0.92\textheight,keepaspectratio]{der-estrutural.pdf}
+    \caption[Diagrama entidade-relacionamento: visão estrutural]{Visão estrutural do
+    diagrama entidade-relacionamento. Mostra as onze entidades, os quinze
+    relacionamentos com suas cardinalidades e as construções especiais do modelo. Os
+    atributos comuns foram omitidos por legibilidade e estão especificados, com tipo e
+    caráter de chave, nas tabelas da Seção~\ref{sec:entidades}; permanecem no diagrama
+    apenas os que carregam notação própria, a chave parcial das duas entidades fracas e o
+    atributo derivado \id{total\_curtidas}.}
+    \label{fig:der-estrutural}
+\end{figure}
+
+A Figura~\ref{fig:der-estrutural} apresenta o diagrama completo. Como a densidade de
+elementos obriga a uma redução considerável na página, as Figuras~\ref{fig:det-acervo}
+a~\ref{fig:det-acompanhamento} ampliam, uma a uma, as quatro regiões que concentram as
+construções mais delicadas do modelo. Entidades que aparecem em mais de uma figura são
+as fronteiras entre regiões, repetidas de propósito para que cada ampliação se leia
+sozinha.
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[height=0.80\textheight,keepaspectratio]{der-det1-acervo.pdf}
+    \caption[Ampliação: o acervo]{Ampliação da região do acervo. A cadeia
+    série--temporada--episódio, com as duas entidades fracas em retângulo duplo, seus
+    relacionamentos identificadores em losango duplo e as chaves parciais \id{numero}.}
+    \label{fig:det-acervo}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth,keepaspectratio]{der-det2-especializacao.pdf}
+    \caption[Ampliação: a especialização]{Ampliação da especialização. Cada subclasse
+    liga-se ao seu alvo por um relacionamento \id{incide\_*} com participação (1,1), e o
+    triângulo marcado com \id{d} recebe de \id{avaliacao} uma linha dupla: disjunta pela
+    marca, total pela linha.}
+    \label{fig:det-especializacao}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.52\textwidth,keepaspectratio]{der-det3-agregacao.pdf}
+    \caption[Ampliação: a agregação]{Ampliação da agregação. O retângulo tracejado envolve
+    \id{usuario}, \id{escreve} e \id{avaliacao}; o \id{curte} parte da borda da caixa, e
+    não de uma das entidades isoladamente. À esquerda, \id{total\_curtidas} em elipse
+    tracejada, o atributo derivado.}
+    \label{fig:det-agregacao}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth,keepaspectratio]{der-det4-social.pdf}
+    \caption[Ampliação: a camada social]{Ampliação da camada social, com o
+    auto-relacionamento \id{responde} e seus papéis.}
+    \label{fig:det-social}
+\end{figure}
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=\textwidth,keepaspectratio]{der-det5-acompanhamento.pdf}
+    \caption[Ampliação: acompanhamento e seguidores]{Ampliação do acompanhamento. As duas
+    faces descritas na Seção~\ref{sec:relacionamentos} chegam a níveis diferentes da
+    hierarquia: \id{declara\_estado} na série, \id{registra} no episódio. À direita, o
+    auto-relacionamento \id{segue} com os papéis nomeados.}
+    \label{fig:det-acompanhamento}
+\end{figure}
+ A especificação textual das
+Seções~\ref{sec:entidades} a~\ref{sec:derivados} é suficiente e não ambígua para a
+construção do diagrama: toda entidade, todo
 atributo com seu tipo e caráter de chave, toda cardinalidade e toda construção
 especial (entidade fraca, especialização, agregação, atributo derivado) está
-enunciada. O arquivo \id{diagramas/der-conceitual.dot} contém um rascunho
-estrutural que pode ser usado para conferência, mas não substitui o diagrama em
-notação de Chen.
+enunciada. Diagrama e texto devem permanecer coerentes: qualquer renomeação feita adiante precisa aparecer nos dois.
 
 % ============================================================================
 \chapter{Modelagem Lógica}\label{cap:logica}
 % ============================================================================
 
-\orientacao{Capítulo a ser escrito. Ele converte o modelo conceitual em um esquema
-relacional e demonstra que o resultado está normalizado. A ordem das seções
-corresponde à ordem em que o raciocínio deve ser apresentado: primeiro as regras
-de conversão, depois o esquema obtido, depois a verificação de que ele é bom.}
+Este capítulo converte o modelo conceitual do Capítulo~\ref{cap:conceitual} em um
+esquema relacional e demonstra que o resultado está normalizado. As seções seguem a
+ordem do raciocínio: as regras de conversão, o esquema que elas produzem e a
+verificação de que ele está normalizado. Nenhum nome definido no
+Capítulo~\ref{cap:conceitual} foi alterado aqui; as únicas construções novas são as
+relações que nascem de relacionamentos muitos-para-muitos, cujos nomes são anunciados
+na Seção~\ref{sec:esquema-relacional}.
 
 \section{Regras de mapeamento aplicadas}\label{sec:mapeamento}
 
@@ -695,6 +757,10 @@ de conversão, depois o esquema obtido, depois a verificação de que ele é bom
 mostrem onde ela foi aplicada. Não basta apresentar o esquema pronto: o professor
 avalia o \emph{processo} de mapeamento (item 6.1 do conteúdo). A tabela abaixo já
 está organizada por tipo de construção; preencham a coluna da direita.}
+
+O mapeamento seguiu as nove regras da Tabela~\ref{tab:mapeamento}, aplicadas nesta
+ordem: primeiro as entidades fortes, depois as fracas (que dependem das chaves das
+primeiras), depois os relacionamentos e, por último, a especialização.
 
 \begin{table}[H]
 \centering
@@ -705,20 +771,80 @@ está organizada por tipo de construção; preencham a coluna da direita.}
 \toprule
 \textbf{Construção no ER} & \textbf{Regra aplicada} & \textbf{Onde ocorre} \\
 \midrule
-Entidade forte & & \id{usuario}, \id{serie}, \id{genero}, \id{pessoa}, \id{avaliacao}, \id{comentario} \\
-Entidade fraca & & \id{temporada}, \id{episodio} \\
-Relacionamento 1:N & & \id{possui\_temporada}, \id{possui\_episodio}, \id{escreve}, \id{recebe}, \id{comenta}, \id{responde} \\
-Relacionamento N:N sem atributo & & \id{classifica} \\
-Relacionamento N:N com atributo & & \id{participa}, \id{declara\_estado}, \id{registra}, \id{curte} \\
-Auto-relacionamento N:N & & \id{segue} \\
-Auto-relacionamento 1:N & & \id{responde} \\
-Especialização total e disjunta & & \id{avaliacao} e suas três subclasses \\
-Atributo derivado & & \id{total\_curtidas} \\
+Entidade forte & Torna-se uma relação. Atributos simples viram colunas e o
+identificador vira chave primária. &
+\id{usuario}, \id{serie}, \id{genero}, \id{pessoa}, \id{avaliacao}, \id{comentario} \\
+\addlinespace
+Entidade fraca & Torna-se uma relação que recebe a chave do proprietário como chave
+estrangeira. Adotou-se chave substituta, com a chave parcial preservada por
+\id{UNIQUE}(proprietário, \id{numero}). &
+\id{temporada}, \id{episodio} \\
+\addlinespace
+Relacionamento 1:N & A relação do lado (1,1) recebe, como chave estrangeira, a chave
+primária do lado (1,N). Atributos próprios do relacionamento, se houvesse, iriam
+junto com a chave estrangeira. &
+\id{possui\_temporada}, \id{possui\_episodio}, \id{escreve}, \id{recebe}, \id{comenta}, \id{responde} \\
+\addlinespace
+Relacionamento N:N sem atributo & Gera relação própria, cuja chave primária é a
+concatenação das chaves das duas entidades participantes. &
+\id{classifica} $\rightarrow$ \id{serie\_genero} \\
+\addlinespace
+Relacionamento N:N com atributo & Idem, acrescida dos atributos próprios do relacionamento como colunas não-chave, exceto quando o atributo precisa integrar a chave, como em \id{participacao} e \id{registro}. &
+\id{participa} $\rightarrow$ \id{participacao}; \id{declara\_estado} $\rightarrow$
+\id{estado\_serie}; \id{registra} $\rightarrow$ \id{registro}; \id{curte}
+$\rightarrow$ \id{curtida} \\
+\addlinespace
+Auto-relacionamento N:N & Gera relação com duas chaves estrangeiras para a mesma
+tabela, renomeadas segundo os papéis do diagrama. &
+\id{segue}(\id{id\_seguidor}, \id{id\_seguido}) \\
+\addlinespace
+Auto-relacionamento 1:N & Não gera relação: vira chave estrangeira recursiva e
+opcional na própria relação. &
+\id{responde} $\rightarrow$ \id{comentario.id\_comentario\_pai} \\
+\addlinespace
+Especialização total e disjunta & Estratégia (b): uma relação para a superclasse e
+uma por subclasse, cuja chave primária é também chave estrangeira para a
+superclasse. Ver Seção~\ref{sec:map-especializacao}. &
+\id{avaliacao} e suas três subclasses \\
+\addlinespace
+Atributo derivado & Materializado como coluna, acompanhado do gatilho que o mantém
+igual à contagem real (Seção~\ref{sec:gatilhos}). &
+\id{avaliacao.total\_curtidas} \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-\subsection{Tratamento da especialização}
+O mapeamento tem limites, e vale registrar quais.
+
+Participações mínimas iguais a 1 do lado N se perdem. O modelo relacional expressa
+participação total apenas do lado que carrega a chave estrangeira, tornando-a
+\id{NOT NULL}: é assim que ``toda temporada pertence a uma série'' (RN06) sobrevive,
+em \id{temporada.id\_serie NOT NULL}. A recíproca não tem tradução declarativa. Para
+exigir que toda série tenha ao menos uma temporada, ou que toda série pertença a pelo
+menos um gênero (RN05), seria preciso verificar, a cada inserção em \id{serie}, uma
+linha que ainda não existe em \id{serie\_genero}. Essas duas restrições migram para
+gatilho postergado ou para a camada de aplicação, e estão assinaladas como tal na
+tabela de rastreabilidade (Seção~\ref{sec:rastreabilidade}).
+
+A agregação não possui regra de mapeamento própria, o que não a torna irrelevante:
+ela já cumpriu seu papel no modelo conceitual, ao determinar que \id{curte} e
+\id{recebe} partem do relacionamento reificado. Como \id{avaliacao} foi mapeada para
+uma relação com chave primária própria, os relacionamentos que saem da agregação se
+convertem como quaisquer outros: \id{curte} é um N:N comum entre \id{usuario} e
+\id{avaliacao}, e \id{recebe} é um 1:N comum. A agregação reaparece na política de
+exclusão, no \id{ON DELETE CASCADE} a partir de \id{avaliacao} (RN24), que
+implementa a dependência existencial descrita na Seção~\ref{sec:agregacao}.
+
+Já as regras que comparam colunas de tabelas diferentes não sobrevivem como
+restrição. RN18 (só se avalia episódio já registrado), RN19 (uma avaliação por
+usuário por alvo), RN22 (ninguém curte a própria avaliação) e RN14 (registrar promove
+o estado) envolvem duas relações simultaneamente, e um \id{CHECK} do PostgreSQL não
+pode consultar outra tabela. Todas foram mapeadas para os gatilhos da
+Tabela~\ref{tab:gatilhos}. A Seção~\ref{sec:dependencias} mostra, no caso da RN19, de
+onde vem essa limitação: o autor está na superclasse e o alvo na subclasse, de modo
+que nenhuma chave candidata alcança as duas colunas.
+
+\subsection{Tratamento da especialização}\label{sec:map-especializacao}
 
 \orientacao{Esta subseção é obrigatória. Existem três estratégias clássicas para
 mapear especialização: (a) tabela única com atributos nulos e discriminador;
@@ -730,6 +856,73 @@ considerando que (i) a superclasse possui atributos próprios relevantes
 precisam referenciar a avaliação independentemente do tipo de alvo, o que exige
 uma chave única compartilhada, e (iii) a estratégia (c) tornaria impossível a
 referência da agregação descrita na Seção~\ref{sec:agregacao}.}
+
+A especialização de \id{avaliacao} (Seção~\ref{sec:especializacao}) admite três
+estratégias de mapeamento, resumidas na Tabela~\ref{tab:estrategias}.
+
+\begin{table}[H]
+\centering
+\caption{Estratégias de mapeamento da especialização}
+\label{tab:estrategias}
+\small
+\begin{tabularx}{\textwidth}{@{}p{3.4cm}XX@{}}
+\toprule
+\textbf{Estratégia} & \textbf{Como ficaria} & \textbf{Por que foi ou não adotada} \\
+\midrule
+(a) Tabela única & Uma só relação \id{avaliacao}, com as colunas \id{id\_serie},
+\id{id\_temporada} e \id{id\_episodio} todas opcionais e um discriminador
+\id{tipo\_alvo}. &
+Descartada. Duas das três colunas de ligação seriam sempre nulas, e a exclusividade dependeria de um \id{CHECK} que conta colunas não nulas, uma regra externa ao modelo. \\
+\addlinespace
+(b) Uma tabela por subclasse, ligada à superclasse & \id{avaliacao} guarda o que é
+comum; \id{avaliacao\_serie}, \id{avaliacao\_temporada} e \id{avaliacao\_episodio}
+guardam cada uma a ligação com seu alvo, e sua chave primária é também chave
+estrangeira para \id{avaliacao}. &
+\textbf{Adotada.} Nenhuma coluna nula por construção, e a chave compartilhada
+permite que \id{curtida} e \id{comentario} referenciem a avaliação sem saber o tipo
+do alvo. \\
+\addlinespace
+(c) Uma tabela por subclasse concreta & Três relações independentes, cada uma
+repetindo \id{nota}, \id{texto}, \id{contem\_spoiler}, \id{data\_publicacao} e
+\id{id\_usuario}; nenhuma relação para a superclasse. &
+Descartada. Sem chave compartilhada, \id{curtida} e \id{comentario} precisariam de
+três chaves estrangeiras opcionais cada, reintroduzindo uma camada adiante o problema que (a) causava. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+A estratégia (b) foi adotada por três razões, na ordem de peso.
+
+\begin{enumerate}[nosep]
+    \item A superclasse tem substância própria: \id{nota}, \id{texto},
+\id{contem\_spoiler} e \id{data\_publicacao} pertencem ao ato de avaliar, e não ao
+alvo. Suprimir a relação da superclasse, como faz (c), obrigaria a repetir esses
+quatro atributos três vezes, e qualquer consulta sobre ``avaliações'' (o ranking da
+Consulta~1, por exemplo) teria de unir três relações antes de começar.
+    \item Curtidas e comentários precisam de uma chave única compartilhada.
+\id{curtida} e \id{comentario} referenciam a avaliação sem se importar com o tipo do
+alvo, e com (b) a chave estrangeira aponta para \id{avaliacao} e pronto. Com (c),
+\id{id\_avaliacao} não seria único entre as três relações, e cada referência
+precisaria de três colunas opcionais e de uma restrição para garantir que apenas uma
+estivesse preenchida.
+    \item A agregação exige um referente único. A Seção~\ref{sec:agregacao}
+estabelece que curtir incide sobre a associação inteira, e uma associação sem
+identidade própria no esquema não pode ser referenciada, que é o que (c) produziria.
+Com (b), essa identidade existe em \id{avaliacao.id\_avaliacao}.
+\end{enumerate}
+
+O custo da escolha é que a disjunção deixa de ser estrutural. Nada, no esquema,
+impede que o mesmo \id{id\_avaliacao} apareça ao mesmo tempo em
+\id{avaliacao\_serie} e em \id{avaliacao\_episodio}, caso em que o discriminador
+\id{tipo\_alvo} diria uma coisa e as tabelas, outra. Há duas saídas. A primeira é
+acrescentar \id{tipo\_alvo} a cada subclasse, fixá-lo por \id{CHECK} e referenciar
+\id{avaliacao(id\_avaliacao, tipo\_alvo)} por chave estrangeira composta, o que
+torna a disjunção declarativa ao preço de uma coluna redundante em três tabelas. A
+segunda é verificá-la por gatilho. Optou-se pela segunda, para não introduzir
+colunas ausentes do dicionário de dados do Capítulo~\ref{cap:conceitual}. A
+totalidade também é inexprimível de forma declarativa e recai na aplicação: a
+inserção em \id{avaliacao} e na subclasse correspondente deve ocorrer na mesma
+transação.
 
 \subsection{Tratamento das entidades fracas}
 
@@ -743,6 +936,39 @@ propagaria para todas as tabelas que referenciam episódio -- \id{registro} e
 ganho semântico. A restrição \textbf{UNIQUE} preserva integralmente a regra
 original (RN06 e RN07).}
 
+No modelo conceitual, a identificação de uma entidade fraca é composta pela chave
+parcial mais a chave do proprietário. Aplicada literalmente, a regra produziria:
+
+\begin{itemize}[nosep]
+    \item \id{temporada}: chave primária (\id{id\_serie}, \id{numero});
+    \item \id{episodio}: chave primária (\id{id\_serie}, \id{numero\_temporada},
+\id{numero\_episodio}), três colunas, porque a chave da temporada já é composta e se
+propaga.
+\end{itemize}
+
+Essa solução funciona e é semanticamente exata, mas a chave de \id{episodio} teria de
+ser copiada inteira para todas as relações que o referenciam: \id{registro} e
+\id{avaliacao\_episodio}. Como \id{registro} é a maior tabela do sistema, com um
+evento por episódio assistido por usuário, o custo apareceria em cada linha e em
+cada índice, sem ganho semântico: ninguém consulta um registro de exibição pelo
+número da temporada.
+
+Adotou-se, portanto, \textbf{chave primária substituta} (\id{id\_temporada},
+\id{id\_episodio}) acompanhada de restrição de unicidade sobre a chave natural:
+
+\begin{itemize}[nosep]
+    \item \id{temporada}: \id{UNIQUE(id\_serie, numero)}, pela RN06;
+    \item \id{episodio}: \id{UNIQUE(id\_temporada, numero)}, pela RN07.
+\end{itemize}
+
+A restrição \id{UNIQUE} preserva integralmente a regra original: continua sendo
+impossível cadastrar duas temporadas~2 na mesma série, ou dois episódios~5 na mesma
+temporada. A chave natural não desaparece: ela permanece como chave candidata, como
+registra a Seção~\ref{sec:dependencias}, e apenas deixa de ser a chave escolhida
+para propagação. A dependência existencial da entidade fraca é
+garantida pela combinação de \id{NOT NULL} na chave estrangeira com \id{ON DELETE
+CASCADE} (RN08).
+
 \section{Esquema relacional}\label{sec:esquema-relacional}
 
 \orientacao{Apresentem o esquema na notação
@@ -752,25 +978,137 @@ Capítulo~\ref{cap:conceitual} e não devem ser alterados sem atualizar aquele
 capítulo. A lista abaixo enumera as relações esperadas, na ordem em que devem ser
 apresentadas.}
 
-\begin{enumerate}[nosep]
-    \item \id{usuario}
-    \item \id{segue}
-    \item \id{serie}
-    \item \id{temporada}
-    \item \id{episodio}
-    \item \id{genero}
-    \item \id{serie\_genero}
-    \item \id{pessoa}
-    \item \id{participacao}
-    \item \id{estado\_serie}
-    \item \id{registro}
-    \item \id{avaliacao}
-    \item \id{avaliacao\_serie}
-    \item \id{avaliacao\_temporada}
-    \item \id{avaliacao\_episodio}
-    \item \id{curtida}
-    \item \id{comentario}
+O mapeamento produz \textbf{17 relações}, apresentadas abaixo na ordem de
+dependência: nenhuma relação referencia outra que apareça depois dela, de modo que a
+mesma ordem serve para os comandos \id{CREATE TABLE} do Capítulo~\ref{cap:fisica} e
+para a carga de dados. A chave primária vem sublinhada; \textsc{fk} indica chave
+estrangeira e \textsc{uk} indica restrição de unicidade.
+
+\begin{enumerate}[leftmargin=2em]
+    \item \id{usuario(\underline{id\_usuario}, username, email, nome\_exibicao, bio, data\_cadastro)}\\
+    \textsc{uk}: \id{username}; \id{email} \hfill (RN01)
+
+    \item \id{segue(\underline{id\_seguidor}, \underline{id\_seguido}, data\_inicio)}\\
+    \textsc{fk}: \id{id\_seguidor} $\rightarrow$ \id{usuario}; \id{id\_seguido}
+$\rightarrow$ \id{usuario} \hfill (RN02, RN03)
+
+    \item \id{serie(\underline{id\_serie}, titulo, titulo\_original, sinopse,
+ano\_estreia, situacao, pais\_origem)}
+
+    \item \id{temporada(\underline{id\_temporada}, id\_serie, numero, titulo, data\_estreia)}\\
+    \textsc{fk}: \id{id\_serie} $\rightarrow$ \id{serie} \quad \textsc{uk}:
+(\id{id\_serie}, \id{numero}) \hfill (RN06, RN08)
+
+    \item \id{episodio(\underline{id\_episodio}, id\_temporada, numero, titulo, duracao\_min, data\_exibicao, sinopse)}\\
+    \textsc{fk}: \id{id\_temporada} $\rightarrow$ \id{temporada} \quad \textsc{uk}:
+(\id{id\_temporada}, \id{numero}) \hfill (RN07, RN08)
+
+    \item \id{genero(\underline{id\_genero}, nome)}\\
+    \textsc{uk}: \id{nome}
+
+    \item \id{serie\_genero(\underline{id\_serie}, \underline{id\_genero})}\\
+    \textsc{fk}: \id{id\_serie} $\rightarrow$ \id{serie}; \id{id\_genero}
+$\rightarrow$ \id{genero} \hfill (RN05)
+
+    \item \id{pessoa(\underline{id\_pessoa}, nome, data\_nascimento, nacionalidade)}
+
+    \item \id{participacao(\underline{id\_pessoa}, \underline{id\_serie}, \underline{funcao}, personagem)}\\
+    \textsc{fk}: \id{id\_pessoa} $\rightarrow$ \id{pessoa}; \id{id\_serie}
+$\rightarrow$ \id{serie} \hfill (RN09, RN10)
+
+    \item \id{estado\_serie(\underline{id\_usuario}, \underline{id\_serie}, estado, data\_atualizacao)}\\
+    \textsc{fk}: \id{id\_usuario} $\rightarrow$ \id{usuario}; \id{id\_serie}
+$\rightarrow$ \id{serie} \hfill (RN13, RN14)
+
+    \item \id{registro(\underline{id\_registro}, id\_usuario, id\_episodio, data\_assistido)}\\
+    \textsc{fk}: \id{id\_usuario} $\rightarrow$ \id{usuario}; \id{id\_episodio} $\rightarrow$ \id{episodio}\\
+    \textsc{uk}: (\id{id\_usuario}, \id{id\_episodio}, \id{data\_assistido}) \hfill
+(RN11, RN12)
+
+    \item \id{avaliacao(\underline{id\_avaliacao}, id\_usuario, nota, texto, contem\_spoiler, data\_publicacao, tipo\_alvo, total\_curtidas)}\\
+    \textsc{fk}: \id{id\_usuario} $\rightarrow$ \id{usuario} \hfill (RN15--RN17, RN20)
+
+    \item \id{avaliacao\_serie(\underline{id\_avaliacao}, id\_serie)}\\
+    \textsc{fk}: \id{id\_avaliacao} $\rightarrow$ \id{avaliacao}; \id{id\_serie}
+$\rightarrow$ \id{serie}
+
+    \item \id{avaliacao\_temporada(\underline{id\_avaliacao}, id\_temporada)}\\
+    \textsc{fk}: \id{id\_avaliacao} $\rightarrow$ \id{avaliacao}; \id{id\_temporada}
+$\rightarrow$ \id{temporada}
+
+    \item \id{avaliacao\_episodio(\underline{id\_avaliacao}, id\_episodio)}\\
+    \textsc{fk}: \id{id\_avaliacao} $\rightarrow$ \id{avaliacao}; \id{id\_episodio}
+$\rightarrow$ \id{episodio} \hfill (RN18)
+
+    \item \id{curtida(\underline{id\_usuario}, \underline{id\_avaliacao}, data\_curtida)}\\
+    \textsc{fk}: \id{id\_usuario} $\rightarrow$ \id{usuario}; \id{id\_avaliacao}
+$\rightarrow$ \id{avaliacao} \hfill (RN21, RN22)
+
+    \item \id{comentario(\underline{id\_comentario}, id\_avaliacao, id\_usuario, id\_comentario\_pai, texto, data\_publicacao)}\\
+    \textsc{fk}: \id{id\_avaliacao} $\rightarrow$ \id{avaliacao}; \id{id\_usuario}
+$\rightarrow$ \id{usuario};
+    \id{id\_comentario\_pai} $\rightarrow$ \id{comentario} \hfill (RN23, RN24)
 \end{enumerate}
+
+Algumas escolhas de chave merecem registro.
+
+Em \id{participacao} a chave tem três colunas. A RN09 permite que a mesma pessoa
+exerça mais de uma função na mesma série, o que impede que a chave seja apenas
+(\id{id\_pessoa}, \id{id\_serie}): \id{funcao} precisa integrá-la. Isso torna
+\id{personagem} o único atributo não-primo da relação, e é justamente ele que a RN10
+restringe, exigindo valor não nulo quando \id{funcao} = \id{ator} e nulo nas demais
+funções. O esquema assume, como simplificação, que uma pessoa interpreta no máximo um
+personagem por série; para admitir atores em papéis múltiplos, \id{personagem}
+passaria a integrar a chave primária.
+
+\id{registro} é a única relação derivada de um N:N cuja chave não é o par de chaves
+estrangeiras, por causa da RN11: o mesmo usuário pode registrar o mesmo episódio em
+datas diferentes, de modo que (\id{id\_usuario}, \id{id\_episodio}) não identifica
+uma linha. A chave natural passa a ser a tripla que inclui \id{data\_assistido},
+declarada como \id{UNIQUE}, o que impede o registro acidentalmente duplicado no mesmo
+dia sem impedir a reexibição.
+
+Em \id{estado\_serie}, o par (\id{id\_usuario}, \id{id\_serie}) como chave primária
+é o próprio enunciado da RN13, ``no máximo um estado por usuário por série''. A regra
+fica implementada pela chave, sem restrição adicional. Séries sobre as quais o usuário
+nada declarou não possuem linha, em vez de uma linha com estado nulo.
+
+Nas três subclasses, a chave primária é também chave estrangeira. Ela é herdada da
+superclasse, o que garante a correspondência um-para-um: uma subclasse não pode ter
+duas linhas para a mesma avaliação, porque a chave primária o proíbe.
+
+A Tabela~\ref{tab:politicas} reúne as políticas de exclusão adotadas para as chaves
+estrangeiras, que o Capítulo~\ref{cap:fisica} detalha no DDL. O critério é único:
+\id{CASCADE} onde o modelo conceitual declara dependência existencial,
+\id{RESTRICT} onde a exclusão representaria perda de informação do acervo.
+
+\begin{table}[H]
+\centering
+\caption{Políticas de integridade referencial}
+\label{tab:politicas}
+\small
+\begin{tabularx}{\textwidth}{@{}p{5.6cm}p{2.4cm}X@{}}
+\toprule
+\textbf{Chave estrangeira} & \textbf{Política} & \textbf{Justificativa} \\
+\midrule
+Todas as que referenciam \id{usuario} & \id{CASCADE} & RN04: excluir o usuário
+elimina todo o seu histórico. \\
+\id{temporada.id\_serie}, \id{episodio.id\_temporada} & \id{CASCADE} & RN08:
+dependência existencial da entidade fraca. \\
+\id{curtida.id\_avaliacao}, \id{comentario.id\_avaliacao} & \id{CASCADE} & RN24: a
+curtida e o comentário perdem o objeto. \\
+\id{comentario.id\_comentario\_pai} & \id{CASCADE} & RN23: excluir o comentário-pai
+elimina a subárvore de respostas. \\
+As três subclasses $\rightarrow$ \id{avaliacao} & \id{CASCADE} & A subclasse não
+existe sem a superclasse. \\
+\id{serie\_genero}, \id{participacao} $\rightarrow$ acervo & \id{CASCADE} &
+Classificação e elenco pertencem à série. \\
+Subclasses $\rightarrow$ alvo do acervo; \id{registro.id\_episodio};
+\id{estado\_serie.id\_serie} & \id{RESTRICT} & Excluir um episódio avaliado ou
+assistido apagaria silenciosamente histórico de usuários. \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \section{Dependências funcionais}\label{sec:dependencias}
 
@@ -782,30 +1120,122 @@ restantes. Atenção especial às relações de chave composta -- \id{participac
 \id{estado\_serie}, \id{serie\_genero}, \id{segue} e \id{curtida} -- que são onde
 uma violação de 2FN apareceria, caso existisse.}
 
+Na tabela a seguir, o símbolo \id{*} após um atributo indica ``e todos os demais
+atributos da relação''. Chaves candidatas em negrito são as escolhidas como chave
+primária.
+
 \begin{longtable}{@{}p{3.6cm}p{6cm}p{6.2cm}@{}}
 \toprule
 \textbf{Relação} & \textbf{Dependências funcionais} & \textbf{Chaves candidatas} \\
 \midrule
 \endhead
-\id{usuario} & & \\
-\id{segue} & & \\
-\id{serie} & & \\
-\id{temporada} & & \\
-\id{episodio} & & \\
-\id{genero} & & \\
-\id{serie\_genero} & & \\
-\id{pessoa} & & \\
-\id{participacao} & & \\
-\id{estado\_serie} & & \\
-\id{registro} & & \\
-\id{avaliacao} & & \\
-\id{avaliacao\_serie} & & \\
-\id{avaliacao\_temporada} & & \\
-\id{avaliacao\_episodio} & & \\
-\id{curtida} & & \\
-\id{comentario} & & \\
+\id{usuario} &
+\id{id\_usuario} $\rightarrow$ \id{*}\newline
+\id{username} $\rightarrow$ \id{*}\newline
+\id{email} $\rightarrow$ \id{*} &
+\textbf{\id{id\_usuario}}; \id{username}; \id{email} \\
+\addlinespace
+\id{segue} &
+(\id{id\_seguidor}, \id{id\_seguido}) $\rightarrow$ \id{data\_inicio} &
+\textbf{(\id{id\_seguidor}, \id{id\_seguido})} \\
+\addlinespace
+\id{serie} &
+\id{id\_serie} $\rightarrow$ \id{*} &
+\textbf{\id{id\_serie}} \\
+\addlinespace
+\id{temporada} &
+\id{id\_temporada} $\rightarrow$ \id{*}\newline
+(\id{id\_serie}, \id{numero}) $\rightarrow$ \id{*} &
+\textbf{\id{id\_temporada}}; (\id{id\_serie}, \id{numero}) \\
+\addlinespace
+\id{episodio} &
+\id{id\_episodio} $\rightarrow$ \id{*}\newline
+(\id{id\_temporada}, \id{numero}) $\rightarrow$ \id{*} &
+\textbf{\id{id\_episodio}}; (\id{id\_temporada}, \id{numero}) \\
+\addlinespace
+\id{genero} &
+\id{id\_genero} $\rightarrow$ \id{nome}\newline
+\id{nome} $\rightarrow$ \id{id\_genero} &
+\textbf{\id{id\_genero}}; \id{nome} \\
+\addlinespace
+\id{serie\_genero} &
+Nenhuma dependência não trivial: a relação é toda chave &
+\textbf{(\id{id\_serie}, \id{id\_genero})} \\
+\addlinespace
+\id{pessoa} &
+\id{id\_pessoa} $\rightarrow$ \id{*} &
+\textbf{\id{id\_pessoa}} \\
+\addlinespace
+\id{participacao} &
+(\id{id\_pessoa}, \id{id\_serie}, \id{funcao}) $\rightarrow$ \id{personagem} &
+\textbf{(\id{id\_pessoa}, \id{id\_serie}, \id{funcao})} \\
+\addlinespace
+\id{estado\_serie} &
+(\id{id\_usuario}, \id{id\_serie}) $\rightarrow$ \id{estado},
+\id{data\_atualizacao} &
+\textbf{(\id{id\_usuario}, \id{id\_serie})} \\
+\addlinespace
+\id{registro} &
+\id{id\_registro} $\rightarrow$ \id{*}\newline
+(\id{id\_usuario}, \id{id\_episodio}, \id{data\_assistido}) $\rightarrow$
+\id{id\_registro} &
+\textbf{\id{id\_registro}}; (\id{id\_usuario}, \id{id\_episodio},
+\id{data\_assistido}) \\
+\addlinespace
+\id{avaliacao} &
+\id{id\_avaliacao} $\rightarrow$ \id{*} &
+\textbf{\id{id\_avaliacao}} \\
+\addlinespace
+\id{avaliacao\_serie} &
+\id{id\_avaliacao} $\rightarrow$ \id{id\_serie} &
+\textbf{\id{id\_avaliacao}} \\
+\addlinespace
+\id{avaliacao\_temporada} &
+\id{id\_avaliacao} $\rightarrow$ \id{id\_temporada} &
+\textbf{\id{id\_avaliacao}} \\
+\addlinespace
+\id{avaliacao\_episodio} &
+\id{id\_avaliacao} $\rightarrow$ \id{id\_episodio} &
+\textbf{\id{id\_avaliacao}} \\
+\addlinespace
+\id{curtida} &
+(\id{id\_usuario}, \id{id\_avaliacao}) $\rightarrow$ \id{data\_curtida} &
+\textbf{(\id{id\_usuario}, \id{id\_avaliacao})} \\
+\addlinespace
+\id{comentario} &
+\id{id\_comentario} $\rightarrow$ \id{*} &
+\textbf{\id{id\_comentario}} \\
 \bottomrule
 \end{longtable}
+
+As relações de chave composta não escondem dependência parcial. Em \id{segue},
+\id{serie\_genero}, \id{estado\_serie} e \id{curtida}, todo atributo não-primo
+(\id{data\_inicio}, \id{estado}, \id{data\_atualizacao}, \id{data\_curtida}) depende
+da chave \emph{inteira}: a data em que $A$ passou a seguir $B$ é propriedade do par,
+e não de $A$ ou de $B$ isoladamente. Em \id{participacao}, \id{personagem} depende
+das três colunas, porque o personagem é função de quem, em qual série e em que papel.
+É essa verificação que garante a 2FN dessas cinco relações.
+
+As chaves naturais sobreviveram como chaves candidatas. As duas entidades fracas e
+\id{registro} têm duas chaves candidatas cada: a substituta, escolhida para
+propagação, e a natural, mantida por \id{UNIQUE}. Nenhuma informação de identificação
+se perdeu na troca.
+
+A RN19, por outro lado, não tem como ser chave. As três subclasses determinam apenas o
+alvo, porque \id{id\_usuario} vive na superclasse. Para que ``um usuário possui no
+máximo uma avaliação por alvo'' fosse uma restrição de chave, seria preciso uma
+unicidade sobre (\id{avaliacao.id\_usuario}, \id{avaliacao\_serie.id\_serie}), duas
+colunas em duas relações diferentes, o que nenhuma restrição declarativa alcança. Daí
+o gatilho \id{trg\_avaliacao\_unica\_por\_alvo}, que é o preço da estratégia (b);
+com a estratégia (a), a mesma regra seria um \id{UNIQUE}.
+
+Resta \id{total\_curtidas}, que é redundância controlada. As formas normais se
+definem sobre dependências \emph{dentro} de uma relação, e \id{total\_curtidas} não
+é determinado por nenhum atributo não-primo de \id{avaliacao}: ele vem de uma consulta
+de agregação sobre \id{curtida}. Formalmente, portanto, \id{avaliacao} permanece em
+3FN. A redundância é real, mas interrelacional, e a contrapartida assumida na
+Seção~\ref{sec:derivados} é o gatilho \id{trg\_atualiza\_contador\_curtidas}, que
+mantém coluna e contagem sincronizadas.
 
 \section{Normalização}\label{sec:normalizacao}
 
@@ -850,6 +1280,163 @@ chave. Se decidirem discutir BCNF, verifiquem que todo determinante é chave
 candidata -- no esquema proposto isso se verifica, pois não há relações com duas
 chaves candidatas sobrepostas.}
 
+O esquema da Seção~\ref{sec:esquema-relacional} já nasce na 3FN, porque foi obtido
+por mapeamento de um modelo ER em que cada conceito do minimundo virou uma entidade
+própria. Afirmar isso, porém, não demonstra nada. Para tornar a normalização
+verificável, esta seção parte de uma relação universal propositalmente mal
+projetada, uma única tabela que guardasse ``tudo sobre uma avaliação de episódio'',
+e a decompõe passo a passo, exibindo, em cada etapa, a anomalia eliminada.
+
+A relação de partida é:
+
+\begin{quote}
+\id{AVALIACAO\_COMPLETA}(\underline{id\_usuario}, \underline{id\_episodio},
+\id{username}, \id{email}, \id{titulo\_serie}, \id{ano\_estreia},
+\id{numero\_temporada}, \id{numero\_episodio}, \id{titulo\_episodio},
+\id{duracao\_min}, \id{nota}, \id{texto}, \id{data\_publicacao}, \id{generos})
+\end{quote}
+
+com chave (\id{id\_usuario}, \id{id\_episodio}), já que um usuário avalia um
+episódio uma única vez (RN19).
+
+\subsection{Primeira forma normal}
+
+O atributo \id{generos} viola a 1FN: uma série pertence a vários gêneros (RN05), e a
+única forma de acomodá-los em uma coluna é como lista,
+\verb|"Drama, Suspense, Ficcao Cientifica"|.
+
+A anomalia é imediata. A consulta ``quais séries são de drama'' deixa de ser uma
+junção e vira uma busca textual, sujeita a erro: \verb|LIKE '%Drama%'| também casa com
+um gênero hipotético ``Dramédia''. Pior, não existe forma de garantir que ``Ficção
+Científica'' e ``Ficcao Cientifica'' sejam o mesmo gênero, porque não há entidade que
+os represente, e o vocabulário de gêneros passa a ser uma convenção de digitação.
+Renomear um gênero exigiria reescrever a lista em todas as linhas de todas as
+avaliações de todas as séries daquele gênero.
+
+A decomposição extrai o atributo multivalorado para uma relação própria, com a
+entidade que lhe dá vocabulário controlado:
+
+\begin{quote}
+\id{genero(\underline{id\_genero}, nome)}\\
+\id{serie\_genero(\underline{id\_serie}, \underline{id\_genero})}
+\end{quote}
+
+\id{serie\_genero} é uma relação toda chave: não há atributo não-primo, e portanto ela
+é trivialmente 2FN, 3FN e BCNF. \id{genero} tem duas chaves candidatas
+(\id{id\_genero} e \id{nome}), e é a unicidade de \id{nome} que torna impossível
+cadastrar o mesmo gênero duas vezes com grafias diferentes.
+
+\subsection{Segunda forma normal}
+
+Com a chave composta (\id{id\_usuario}, \id{id\_episodio}), vários atributos dependem
+de apenas metade dela:
+
+\begin{itemize}[nosep]
+    \item \id{id\_usuario} $\rightarrow$ \id{username}, \id{email};
+    \item \id{id\_episodio} $\rightarrow$ \id{numero\_episodio},
+    \id{titulo\_episodio}, \id{duracao\_min}.
+\end{itemize}
+
+São dependências parciais, e cada uma produz seu conjunto de anomalias.
+
+\paragraph{Anomalia de atualização.} O e-mail de um usuário está repetido em cada
+avaliação que ele publicou. Alterá-lo exige um \id{UPDATE} em todas as linhas; se
+uma escapar, o banco passa a afirmar dois e-mails para a mesma pessoa, e não há
+critério interno para decidir qual é o verdadeiro.
+
+\paragraph{Anomalia de exclusão.} Um usuário que apaga sua única avaliação
+desaparece do sistema: seu username e seu e-mail sumiriam junto com a linha, embora
+a conta deva continuar existindo. O mesmo vale pelo outro lado: apagar a última
+avaliação de
+um episódio apagaria a duração e o título daquele episódio, que são dados do acervo e
+não do usuário.
+
+\paragraph{Anomalia de inserção.} Um usuário recém-cadastrado que ainda não avaliou
+nada não pode ser representado, porque não existe linha sem \id{id\_episodio}. Um
+episódio recém-lançado, idem. A relação universal só admite existir quem já
+interagiu.
+
+A decomposição separa cada lado da chave em sua própria relação:
+
+\begin{quote}
+\id{usuario(\underline{id\_usuario}, username, email, \dots)}\\
+\id{episodio(\underline{id\_episodio}, \dots, numero, titulo, duracao\_min, \dots)}\\
+\id{avaliacao(\underline{id\_avaliacao}, id\_usuario, nota, texto, data\_publicacao,
+\dots)}
+\end{quote}
+
+Note-se que a decomposição é também o que permite atender à RN01: com \id{usuario}
+isolada, \id{UNIQUE(email)} passa a ser verificável; na relação universal, a mesma
+restrição seria impossível, já que o e-mail se repete legitimamente em cada avaliação
+do usuário.
+
+\subsection{Terceira forma normal}
+
+Restam em \id{AVALIACAO\_COMPLETA} os atributos \id{titulo\_serie},
+\id{ano\_estreia} e \id{numero\_temporada}. Eles dependem de \id{id\_episodio}, que é
+metade da chave, e a dependência é \emph{transitiva}:
+
+\begin{quote}
+\id{id\_episodio} $\rightarrow$ \id{numero\_temporada} $\rightarrow$
+\id{titulo\_serie}, \id{ano\_estreia}
+\end{quote}
+
+O título da série pertence à série, e chega ao episódio através da temporada.
+
+Corrigir o título de uma série obriga, nesse desenho, a percorrer todos os seus
+episódios, em todas as temporadas. Como a hierarquia tem três níveis, o mesmo título
+pode estar replicado em dezenas de linhas por temporada. E uma série recém-cadastrada,
+ainda sem episódios lançados, novamente não teria onde existir.
+
+A decomposição quebra a cadeia transitiva em seus três elos, o que reconstrói a
+hierarquia do minimundo:
+
+\begin{quote}
+\id{serie(\underline{id\_serie}, titulo, ano\_estreia, \dots)}\\
+\id{temporada(\underline{id\_temporada}, id\_serie, numero, \dots)}\\
+\id{episodio(\underline{id\_episodio}, id\_temporada, numero, \dots)}
+\end{quote}
+
+Cada atributo passa a residir no nível a que pertence, e cada nível guarda apenas a
+referência ao nível imediatamente superior. A hierarquia de três níveis do
+Capítulo~\ref{cap:conceitual} é, portanto, uma exigência de normalização: qualquer
+tentativa de achatá-la reintroduz a dependência transitiva.
+
+\subsection{Verificação do esquema final}
+
+Percorrendo as 17 relações da Seção~\ref{sec:esquema-relacional} com as dependências
+funcionais da Seção~\ref{sec:dependencias}:
+
+\begin{itemize}[nosep]
+    \item \textbf{1FN}: todos os atributos são atômicos. Nenhuma coluna guarda
+lista, e as duas construções que poderiam tentá-lo, gêneros de uma série e funções
+de uma pessoa em uma série, foram mapeadas para \id{serie\_genero} e
+\id{participacao}.
+    \item \textbf{2FN}: as relações de chave simples satisfazem a condição
+    trivialmente. Das cinco de chave composta, \id{serie\_genero} não tem atributo
+    não-primo, e em \id{segue}, \id{estado\_serie}, \id{curtida} e
+    \id{participacao} os atributos não-primos dependem da chave inteira, conforme
+    verificado ao final da Seção~\ref{sec:dependencias}.
+    \item \textbf{3FN}: não há dependência transitiva. Toda relação descreve um
+    único conceito, e atributos de conceitos vizinhos aparecem apenas como chave
+    estrangeira. O caso que mereceria dúvida, \id{total\_curtidas}, foi analisado ao
+    final da Seção~\ref{sec:dependencias}: por ser derivado de outra relação, não
+    configura dependência transitiva interna.
+    \item \textbf{BCNF}: em toda relação, todo determinante é chave candidata.
+    Basta percorrer a coluna central da tabela da Seção~\ref{sec:dependencias}: não
+    há um único lado esquerdo que não seja chave candidata, e não existem duas
+chaves candidatas compostas e sobrepostas, que é a situação capaz de produzir
+violação de BCNF sem violação de 3FN. O esquema está, portanto, em BCNF.
+\end{itemize}
+
+Vale observar que a decomposição é \textbf{sem perda de junção} e \textbf{preserva
+dependências}: cada passo separou a relação por um determinante que permaneceu como
+chave estrangeira no lado dependente, de modo que a junção pelas chaves reconstrói
+\id{AVALIACAO\_COMPLETA} sem gerar linhas espúrias. A visão
+\id{vw\_avaliacao\_completa} do Capítulo~\ref{cap:fisica} faz exatamente essa
+reconstrução: a redundância deixou de ser armazenada e passou a ser computada quando
+necessária.
+
 \section{Diagrama lógico}
 
 \orientacao{Diagrama do esquema relacional, com todas as tabelas, colunas, chaves
@@ -860,12 +1447,73 @@ partir do banco criado, usando pgAdmin ou DBeaver. Salvem em
 reversa, confiram se o diagrama não ficou incompleto: ferramentas costumam omitir
 restrições \id{CHECK} e gatilhos, que então precisam ser mencionados no texto.}
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=\textwidth]{der-logico.png}
-%     \caption{Diagrama lógico do banco de dados}
-%     \label{fig:der-logico}
-% \end{figure}
+A Figura~\ref{fig:der-logico} apresenta as dezessete relações em notação de pé de
+galinha. Cada tabela é um retângulo com o nome no cabeçalho e uma linha por coluna. O
+marcador à esquerda de cada linha distingue chave primária (\id{PK}), chave estrangeira
+(\id{FK}), coluna que acumula as duas funções (\id{PF}) e restrição de unicidade
+(\id{UK}); as colunas que compõem a chave primária aparecem sublinhadas. Nas ligações,
+o pé de galinha marca o lado que admite muitas linhas e o traço simples marca o lado
+referenciado, que é sempre a chave primária da tabela de destino.
+
+Como o esquema é denso, as Figuras~\ref{fig:log-acervo} e~\ref{fig:log-avaliacao}
+ampliam as duas regiões de maior encadeamento. O diagrama é, além de documentação, um
+instrumento de conferência: ele e o DDL do Capítulo~\ref{cap:fisica} devem coincidir
+coluna a coluna, e qualquer divergência entre os dois indica erro em um deles.
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=\textwidth,keepaspectratio]{der-logico.pdf}
+    \caption[Diagrama lógico do banco de dados]{Diagrama lógico do banco de dados. As
+    dezessete relações do esquema, com suas colunas, chaves primárias, chaves
+    estrangeiras e restrições de unicidade. As cores acompanham os três pilares da
+    Seção~\ref{sec:relacionamentos}: acervo em azul, usuário em roxo, avaliação e
+    camada social em âmbar, e as duas tabelas de acompanhamento em verde.}
+    \label{fig:der-logico}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.76\textwidth,keepaspectratio]{der-log-det1-acervo.pdf}
+    \caption[Ampliação: o acervo no esquema lógico]{Ampliação do acervo. A cadeia
+    \id{serie}, \id{temporada} e \id{episodio}, com a chave substituta de cada nível
+    e a restrição \id{UNIQUE} sobre a chave natural, mais as duas tabelas nascidas de
+    relacionamentos muitos-para-muitos.}
+    \label{fig:log-acervo}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.76\textwidth,keepaspectratio]{der-log-det2-avaliacao.pdf}
+    \caption[Ampliação: a especialização no esquema lógico]{Ampliação da
+    especialização. Nas três subclasses, \id{id\_avaliacao} é ao mesmo tempo chave
+    primária e chave estrangeira, o que impede que uma avaliação tenha duas linhas na
+    mesma subclasse e produz a correspondência um-para-um com a superclasse.}
+    \label{fig:log-avaliacao}
+\end{figure}
+
+A leitura acompanha os três pilares do minimundo. Ao centro fica a cadeia do acervo,
+\id{serie}, \id{temporada} e \id{episodio}, e logo abaixo dela as três subclasses da
+especialização. À esquerda ficam as tabelas que só existem em função de outras: as duas
+nascidas de relacionamentos muitos-para-muitos do acervo, \id{serie\_genero} e
+\id{participacao}, e as duas do acompanhamento, \id{estado\_serie} e \id{registro},
+que são as duas faces descritas na Seção~\ref{sec:relacionamentos} e chegam a níveis
+diferentes da hierarquia: a intenção declarada na série, o histórico efetivo no
+episódio. À direita ficam \id{usuario} e \id{avaliacao} com a camada social,
+\id{segue}, \id{curtida} e \id{comentario}.
+
+O encadeamento de chaves estrangeiras torna visível uma propriedade que o texto vinha
+afirmando: \id{usuario} e \id{avaliacao} concentram a maior parte das referências, e
+nenhuma tabela do acervo aponta para o usuário. O acervo existe independentemente de
+quem o assiste, e é o acompanhamento que faz a ponte entre os dois lados.
+
+O diagrama deixa de fora duas coisas que precisam ser enunciadas aqui. As restrições
+\id{CHECK} não têm representação gráfica em nenhuma notação relacional: faixa e
+granularidade da nota (RN16), avaliação não vazia (RN17), data de exibição não futura
+(RN12), coerência entre \id{funcao} e \id{personagem} (RN10) e proibição de seguir a
+si mesmo (RN03). Os cinco gatilhos da Tabela~\ref{tab:gatilhos} também não aparecem,
+e são eles que implementam as regras interrelacionais identificadas na
+Seção~\ref{sec:mapeamento}. Quem lesse apenas o diagrama concluiria que o esquema
+permite avaliar um episódio nunca assistido ou curtir a própria avaliação.
 
 % ============================================================================
 \chapter{Modelagem Física}\label{cap:fisica}
@@ -1094,9 +1742,7 @@ quando \verb|\orientacoesfalse| é acionado.
 \textbf{Integrante} & \textbf{Parte} & \textbf{Entrega} \\
 \midrule
 Igor & Capítulo~\ref{cap:conceitual} &
-Concluído: minimundo, 24 regras de negócio, dicionário de
-dados, cardinalidades, especialização, agregação. Falta apenas desenhar o DER no
-brModelo. \\
+Concluído: minimundo, 24 regras de negócio, dicionário de dados, cardinalidades, especialização, agregação e o DER. \\
 \addlinespace
 -- & Capítulo~\ref{cap:logica} &
 Mapeamento ER\,$\rightarrow$\,relacional, esquema relacional, dependências
